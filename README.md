@@ -33,6 +33,7 @@ You'll be able to try the two MCP tools defined by the server:
 * `current-moon-phase`: to get the current phase of the moon as of today (no argument required)
 * `moon-phase-at-date`: to get the phase of the moon at a particular date (a string following the `yyyy-MM-dd` date format)
 
+
 ## Deploying to Google Cloud Run
 
 ### 1. Initial Google Cloud Setup
@@ -50,6 +51,12 @@ gcloud projects create my-micronaut-mcp-server # Choose a unique project ID
 export PROJECT_ID=$(gcloud config get-value project)
 echo "Using project: $PROJECT_ID"
 
+# Set the service name
+export SERVICE_NAME=mn-mcp-server
+
+# Set your desired region
+export REGION=europe-west1
+
 # Enable billing for the project (interactive step)
 # See: https://cloud.google.com/billing/docs/how-to/modify-project
 ```
@@ -64,14 +71,10 @@ gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregi
 
 ### 3. Deploy the Service
 
-Deploy the application directly from your local source code. Choose a region for your deployment.
+Deploy the application directly from your local source code.
 
 ```bash
-# Set your desired region
-export REGION="europe-west1"
-
-# Deploy from source
-gcloud run deploy mn-mcp-server \
+gcloud run deploy $SERVICE_NAME \
     --source . \
     --platform managed \
     --region $REGION \
@@ -162,10 +165,13 @@ mn create-app --build=gradle --jdk=21 --lang=java --test=junit \
 
 ### Custom Dependencies
 
-The following dependencies were added to `build.gradle` to support the MCP server and enhance JSON Schema generation:
+The following dependencies were added to `build.gradle`, or updated, to support the MCP server and enhance JSON Schema generation:
 
 ```groovy
 dependencies {
+    // Existing dependencies
+    // ...
+    
     // The Micronaut MCP support
     implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.3")
 
