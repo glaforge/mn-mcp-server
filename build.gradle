@@ -28,21 +28,6 @@ repositories {
 }
 
 dependencies {
-
-    annotationProcessor("io.micronaut:micronaut-http-validation")                           // OK
-    annotationProcessor("io.micronaut.jsonschema:micronaut-json-schema-processor:1.7.0")    // <-- 1.7.0 needed
-    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")           // OK
-    implementation("io.micronaut:micronaut-jackson-databind")                               // OK
-    implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:1.7.0")       // <-- 1.7.0 needed
-    implementation("io.micronaut.validation:micronaut-validation")                          // OK
-    implementation("jakarta.validation:jakarta.validation-api")                             // <-- missing
-    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.3")                  // OK (to be added)
-    compileOnly("io.micronaut:micronaut-http-client")                                       // OK
-    runtimeOnly("ch.qos.logback:logback-classic")                                           // OK
-    testImplementation("io.micronaut:micronaut-http-client")                                // OK
-    testImplementation("io.micronaut.jsonschema:micronaut-json-schema-validation")          // <-- missing
-
-/*
     annotationProcessor("io.micronaut:micronaut-http-validation")
 
     // For data validation
@@ -63,8 +48,6 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
 
     testImplementation("io.micronaut:micronaut-http-client")
-*/
-
 }
 
 
