@@ -27,6 +27,7 @@ import jakarta.validation.constraints.NotBlank;
 )
 @Introspected
 public record MoonPhase(
-    @NotBlank String phase,
-    @NotBlank String emoji
-) { }
+    @NotBlank String emoji,
+    @NotBlank String phase
+) {
+}
