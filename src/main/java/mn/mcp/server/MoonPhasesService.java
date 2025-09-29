@@ -17,6 +17,7 @@
 package mn.mcp.server;
 
 import java.lang.Math;
+import java.time.LocalDate;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -29,6 +30,26 @@ public class MoonPhasesService {
     // Ecliptic longitude of the Sun at perigee
     private static final Double SUN_ECLIPTIC_LONGITUDE_PERIGEE = 282.596403;
     private static final Double TO_RADIANS = Math.PI / 180.0;
+    private static final int SECONDS_IN_A_DAY = 86400;
+
+    public MoonPhaseEmoji currentMoonPhase() {
+        return moonPhaseAtUnixTimestamp(System.currentTimeMillis() / 1000L);
+    }
+
+    public MoonPhaseEmoji moonPhaseAtDate(LocalDate localDate) {
+        return moonPhaseAtUnixTimestamp(localDate.toEpochDay() * SECONDS_IN_A_DAY);
+    }
+
+    MoonPhaseEmoji moonPhaseAtUnixTimestamp(long timeSeconds) {
+        double moonPhaseRadians = calculateMoonPhaseRadians(timeSeconds);
+        double moonPhaseDegrees = moonPhaseRadians * (180.0 / Math.PI);
+
+        // Normalize degrees to [0, 360) for interpretation
+        double normalizedMoonPhaseDegrees = fixAngle(moonPhaseDegrees);
+
+        // Approximate interpretation of the phase
+        return getMoonPhaseEmoji(normalizedMoonPhaseDegrees);
+    }
 
     /**
      * Normalizes an angle to the range [0, 360) degrees.
@@ -103,37 +124,25 @@ public class MoonPhasesService {
         return moonAgeDegrees * TO_RADIANS; // Return phase angle in radians
     }
 
-    public MoonPhase currentMoonPhase() {
-        return moonPhaseAtUnixTimestamp(System.currentTimeMillis() / 1000L);
-    }
-
-    public MoonPhase moonPhaseAtUnixTimestamp(long timeSeconds) {
-        double moonPhaseRadians = calculateMoonPhaseRadians(timeSeconds);
-        double moonPhaseDegrees = moonPhaseRadians * (180.0 / Math.PI);
-
-        // Normalize degrees to [0, 360) for interpretation
-        double normalizedMoonPhaseDegrees = fixAngle(moonPhaseDegrees);
-
-        // Approximate interpretation of the phase
+    private static MoonPhaseEmoji getMoonPhaseEmoji(double normalizedMoonPhaseDegrees) {
         if (normalizedMoonPhaseDegrees < 22.5) { // Includes cases where normalized is close to 360
-            return new MoonPhase("🌑", "new moon");
+            return new MoonPhaseEmoji(MoonPhase.NEW_MOON, "🌑");
         } else if (normalizedMoonPhaseDegrees < 67.5) {
-            return new MoonPhase("🌒", "waxing crescent");
+            return new MoonPhaseEmoji(MoonPhase.WAXING_CRESCENT, "🌒");
         } else if (normalizedMoonPhaseDegrees < 112.5) {
-            return new MoonPhase("🌓", "first quarter");
+            return new MoonPhaseEmoji(MoonPhase.FIRST_QUARTER, "🌓");
         } else if (normalizedMoonPhaseDegrees < 157.5) {
-            return new MoonPhase("🌔", "waxing gibbous");
+            return new MoonPhaseEmoji(MoonPhase.WAXING_GIBBOUS, "🌔");
         } else if (normalizedMoonPhaseDegrees < 202.5) {
-            return new MoonPhase("🌕", "full");
+            return new MoonPhaseEmoji(MoonPhase.FULL_MOON, "🌕");
         } else if (normalizedMoonPhaseDegrees < 247.5) {
-            return new MoonPhase("🌖", "waning gibbous");
+            return new MoonPhaseEmoji(MoonPhase.WANING_GIBBOUS, "🌖");
         } else if (normalizedMoonPhaseDegrees < 292.5) {
-            return new MoonPhase("🌗", "last quarter");
+            return new MoonPhaseEmoji(MoonPhase.LAST_QUARTER, "🌗");
         } else if (normalizedMoonPhaseDegrees < 337.5) {
-            return new MoonPhase("🌘", "waning crescent");
+            return new MoonPhaseEmoji(MoonPhase.WANING_CRESCENT, "🌘");
         } else { // Between 337.5 and 360
-            return new MoonPhase("🌑", "new moon approaching");
+            return new MoonPhaseEmoji(MoonPhase.NEW_MOON, "🌑");
         }
     }
 }
-
