@@ -1,17 +1,17 @@
 package mn.mcp.server;
 
-import io.micronaut.core.annotation.Introspected;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.jsonschema.JsonSchema;
-import jakarta.validation.constraints.NotBlank;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
+import java.time.LocalDate;
+
+/**
+ *
+ * @param date the date in format yyyy-MM-dd
+ */
 @JsonSchema
-@Introspected
-public record MoonPhaseRequest(
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Input date format: yyyy-MM-dd")
-    String localDate
-) {
+@Serdeable
+public record MoonPhaseRequest(@NonNull @NotNull LocalDate date) {
 }

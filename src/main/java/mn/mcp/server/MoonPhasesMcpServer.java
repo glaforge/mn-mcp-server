@@ -16,39 +16,29 @@
 
 package mn.mcp.server;
 
-import io.micronaut.mcp.annotations.ToolArg;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import io.micronaut.mcp.annotations.Tool;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-
-import java.time.LocalDate;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 @Singleton
-public class MoonPhasesMcpServer {
+class MoonPhasesMcpServer {
+    private final MoonPhasesService moonPhasesService;
 
-    @Inject
-    private MoonPhasesService moonPhasesService;
+    MoonPhasesMcpServer(MoonPhasesService moonPhasesService) {
+        this.moonPhasesService = moonPhasesService;
+    }
 
     @Tool(name = "current-moon-phase",
         description = "Provides the current moon phase")
-    public MoonPhase currentMoonPhase() {
+    MoonPhaseEmoji currentMoonPhase() {
         return moonPhasesService.currentMoonPhase();
     }
 
     @Tool(name = "moon-phase-at-date",
-        description = "Provides the moon phase at a certain date (with a format of yyyy-MM-dd)")
-    public MoonPhase moonPhaseAtDate(
-        @ToolArg(name = "localDate")
-        @NotBlank @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}")
-        String localDate
-//        MoonPhaseRequest moonPhaseRequest
-    ) {
-//        String localDate = moonPhaseRequest.localDate();
-
-        LocalDate parsedLocalDate = LocalDate.parse(localDate);
-
-        return moonPhasesService.moonPhaseAtUnixTimestamp(parsedLocalDate.toEpochDay() * 86400);
+            description = "Provides the moon phase at a certain date (with a format of yyyy-MM-dd)")
+    @NotNull
+    MoonPhaseEmoji moonPhaseAtDate(@Valid MoonPhaseRequest moonPhaseRequest) {
+        return moonPhasesService.moonPhaseAtDate(moonPhaseRequest.date());
     }
 }
