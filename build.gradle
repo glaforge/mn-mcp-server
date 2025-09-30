@@ -38,11 +38,13 @@ dependencies {
     implementation("io.micronaut.validation:micronaut-validation")
 
     // For rich JSON schema handling
-    annotationProcessor("io.micronaut.jsonschema:micronaut-json-schema-processor:1.7.0")
-    implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:1.7.0")
+    annotationProcessor("io.micronaut.jsonschema:micronaut-json-schema-processor:1.7.2")
+    implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:1.7.2")
 
     // The Micronaut MCP support
-    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.7")
+    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.8")
+    testImplementation("io.micronaut.mcp:micronaut-mcp-client-java-sdk:0.0.8")
+    implementation("io.micronaut.mcp:micronaut-mcp-client-langchain4j:0.0.8")
 
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
