@@ -42,7 +42,7 @@ dependencies {
     implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:1.7.0")
 
     // The Micronaut MCP support
-    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.7")
+    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.8")
 
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
