@@ -42,7 +42,11 @@ dependencies {
     implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:1.7.0")
 
     // The Micronaut MCP support
-    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.8")
+    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.10")
+
+    // ADK
+    implementation("com.google.adk:google-adk:0.3.0")
+    implementation 'io.modelcontextprotocol.sdk:mcp:0.13.1'
 
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
@@ -88,4 +92,6 @@ tasks.named("dockerfileNative") {
     jdkVersion = "21"
 }
 
-
+tasks.named('shadowJar') {
+    zip64 = true
+}
