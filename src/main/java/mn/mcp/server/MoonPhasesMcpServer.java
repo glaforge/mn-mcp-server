@@ -16,29 +16,27 @@
 
 package mn.mcp.server;
 
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import io.micronaut.mcp.annotations.Tool;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 @Singleton
-class MoonPhasesMcpServer {
-    private final MoonPhasesService moonPhasesService;
-
-    MoonPhasesMcpServer(MoonPhasesService moonPhasesService) {
-        this.moonPhasesService = moonPhasesService;
-    }
+public class MoonPhasesMcpServer {
+    @Inject
+    MoonPhasesService moonPhasesService;
 
     @Tool(name = "current-moon-phase",
         description = "Provides the current moon phase")
-    MoonPhaseEmoji currentMoonPhase() {
+    public MoonPhaseEmoji currentMoonPhase() {
         return moonPhasesService.currentMoonPhase();
     }
 
     @Tool(name = "moon-phase-at-date",
-            description = "Provides the moon phase at a certain date (with a format of yyyy-MM-dd)")
+        description = "Provides the moon phase at a certain date (yyyy-MM-dd)")
     @NotNull
-    MoonPhaseEmoji moonPhaseAtDate(@Valid MoonPhaseRequest moonPhaseRequest) {
+    public MoonPhaseEmoji moonPhaseAtDate(@Valid MoonPhaseRequest moonPhaseRequest) {
         return moonPhasesService.moonPhaseAtDate(moonPhaseRequest.date());
     }
 }
