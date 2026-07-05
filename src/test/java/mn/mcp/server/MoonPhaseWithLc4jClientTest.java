@@ -24,7 +24,7 @@ public class MoonPhaseWithLc4jClientTest {
         }
 
         ChatModel model = GoogleGenAiChatModel.builder()
-                .modelName("gemini-2.5-flash")
+                .modelName("gemini-3.5-flash")
                 .apiKey(System.getenv("GEMINI_API_KEY"))
                 .build();
 
