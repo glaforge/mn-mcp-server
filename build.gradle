@@ -15,9 +15,9 @@
  */
 
 plugins {
-    id("io.micronaut.application") version "4.5.4"
-    id("com.gradleup.shadow") version "8.3.9"
-    id("io.micronaut.aot") version "4.5.4"
+    id("io.micronaut.application") version "5.0.1"
+    id("com.gradleup.shadow") version "9.4.3"
+    id("io.micronaut.aot") version "5.0.1"
 }
 
 version = "0.1"
@@ -38,19 +38,19 @@ dependencies {
     implementation("io.micronaut.validation:micronaut-validation")
 
     // For rich JSON schema handling
-    annotationProcessor("io.micronaut.jsonschema:micronaut-json-schema-processor:1.7.0")
-    implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:1.7.0")
+    annotationProcessor("io.micronaut.jsonschema:micronaut-json-schema-processor:2.0.1")
+    implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:2.0.1")
 
     // The Micronaut MCP support
-    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.10")
+    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:1.1.0")
 
     // ADK
-    implementation("com.google.adk:google-adk:0.3.0")
-    implementation 'io.modelcontextprotocol.sdk:mcp:0.13.1'
+    implementation("com.google.adk:google-adk:1.5.0")
+    implementation 'io.modelcontextprotocol.sdk:mcp:1.1.3'
 
     // LC4j
-    testImplementation("dev.langchain4j:langchain4j-mcp:1.10.0-beta18")
-    implementation("dev.langchain4j:langchain4j-google-ai-gemini:1.10.0")
+    testImplementation("dev.langchain4j:langchain4j-mcp:1.17.0-beta27")
+    implementation("dev.langchain4j:langchain4j-google-genai:1.17.1-beta27")
 
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
@@ -63,8 +63,8 @@ application {
     mainClass = "mn.mcp.server.Application"
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("21")
-    targetCompatibility = JavaVersion.toVersion("21")
+    sourceCompatibility = JavaVersion.toVersion("25")
+    targetCompatibility = JavaVersion.toVersion("25")
 }
 
 
@@ -93,9 +93,9 @@ micronaut {
 
 
 tasks.named("dockerfileNative") {
-    jdkVersion = "21"
+    jdkVersion = "25"
 }
 
-tasks.named('shadowJar') {
+tasks.withType(Zip).configureEach {
     zip64 = true
 }

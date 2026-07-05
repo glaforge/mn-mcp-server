@@ -6,14 +6,16 @@ import dev.langchain4j.mcp.client.McpClient;
 import dev.langchain4j.mcp.client.transport.McpTransport;
 import dev.langchain4j.mcp.client.transport.http.StreamableHttpMcpTransport;
 import dev.langchain4j.model.chat.ChatModel;
-import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
+import dev.langchain4j.model.google.genai.GoogleGenAiChatModel;
 import dev.langchain4j.service.AiServices;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.runtime.server.EmbeddedServer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 public class MoonPhaseWithLc4jClientTest {
     @Test
+    @EnabledIfEnvironmentVariable(named = "GEMINI_API_KEY", matches = ".+")
     void test() {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class);
 
@@ -21,9 +23,9 @@ public class MoonPhaseWithLc4jClientTest {
             String chat(String msg);
         }
 
-        ChatModel model = GoogleAiGeminiChatModel.builder()
+        ChatModel model = GoogleGenAiChatModel.builder()
                 .modelName("gemini-2.5-flash")
-                .apiKey(System.getenv("GOOGLE_API_KEY"))
+                .apiKey(System.getenv("GEMINI_API_KEY"))
                 .build();
 
         McpTransport transport = StreamableHttpMcpTransport.builder()

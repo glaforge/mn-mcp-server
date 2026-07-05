@@ -21,14 +21,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 class MoonPhaseWithAdkTest {
     EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class);
 
     @Test
+    @EnabledIfEnvironmentVariable(named = "GEMINI_API_KEY", matches = ".+")
     void testLocalServer() {
         StreamableHttpServerParameters params = StreamableHttpServerParameters
-            .builder(embeddedServer.getURI().toString() + "/mcp")
+            .builder()
+            .url(embeddedServer.getURI().toString() + "/mcp")
             .build();
 
         try (McpToolset mcpToolset = new McpToolset(params)) {
@@ -37,7 +40,7 @@ class MoonPhaseWithAdkTest {
 
             LlmAgent moonExpertAgent = LlmAgent.builder()
                 .name("moon-expert")
-                .model("gemini-2.5-flash")
+                .model("gemini-3.5-flash")
                 .description("a moon expert")
                 .instruction("""
                     You are a knowledgeable astronomy expert
@@ -69,7 +72,7 @@ class MoonPhaseWithAdkTest {
                 messageContent = (Content) message;
             }
             allEvents.addAll(
-                runner.runAsync(session, messageContent, RunConfig.builder().build())
+                runner.runAsync(session.sessionKey(), messageContent, RunConfig.builder().build())
                     .blockingStream()
                     .toList()
             );
